@@ -28,7 +28,7 @@ export const errorMiddleware = (err, req, res, next) => {
   const errorMessage = err.erros ? Object.values(err.erros).map((error)=> error.message) : err.message
 
   return res.status(err.statusCode).json({
-    success: true,
+    success: false,
     message: errorMessage
   })
 }

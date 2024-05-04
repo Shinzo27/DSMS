@@ -64,3 +64,4 @@ Tech Stack Used:
 - React.js
 - Node.js
 
+Pending: Setup Env file

@@ -9,15 +9,16 @@ export const handleLogin = catchAsyncErrors(async(req,res,next)=>{
 
 export const handleRegister = catchAsyncErrors(async(req,res, next)=>{
     const { username, email, password } = req.body
-    if( !username || !email || !password ) return next(ErrorHandler("Please Enter All Details"))
+    if( !username || !email || !password ) return next(new ErrorHandler("Please Enter All Details", 404))
     
     const isRegistered = await User.findOne({email})
-    if(isRegistered) return next(ErrorHandler("User Already Exists With This Email", 400))
+    if(isRegistered) return next(new ErrorHandler("User Already Exists With This Email", 400))
     
     const user = await User.create({
         username,
         email,
-        password
+        password,
+        role: "Customer"
     })
     generateToken(user, "User Registered", 200, res);
 })

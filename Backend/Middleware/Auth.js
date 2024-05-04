@@ -25,3 +25,4 @@ export const isAdminAuthenticated = async(req,res,next) => {
     
     next()
 }
+
