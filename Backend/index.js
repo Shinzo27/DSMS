@@ -9,9 +9,9 @@ import mongoose from 'mongoose'
 const PORT = 8000 || process.env.PORT
 
 const app = express()
-config({path: './config.env'})
+config({path: './.env'})
 
-mongoose.connect('mongodb://127.0.0.1:27017/Dsms').then(()=>console.log("MongoDb Connected!"))
+mongoose.connect(process.env.MONGO_URI).then(()=>console.log("MongoDb Connected!"))
 
 app.use(cors({
     origin: [process.env.FRONTEND_URL],

@@ -39,7 +39,10 @@ userSchema.methods.generateWebToken = function (){
     return jwt.sign({id: this._id, email: this.email}, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRES })
 }
 
-//Export the model
+userSchema.methods.comparePassword = async function(enteredPassword){
+    return await bcrypt.compare(enteredPassword, this.password)
+}
+
 const User = model('User', userSchema);
 
 export default User
