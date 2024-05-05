@@ -64,4 +64,7 @@ Tech Stack Used:
 - React.js
 - Node.js
 
-Pending: Setup Env file
+Code Flow : 
+
+Registration : Enter Email,Password => check if exist (if yes => show error) => send otp (will return otp, email, password, username) => show msg (otp sent) => pass props with useNavigate => navigate to otpVerify => enter otp (if doesn't match show error) => if matched (show success and register user) => generate token and redirect to home
+

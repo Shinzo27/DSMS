@@ -1,5 +1,5 @@
 import User from '../Models/User.js'
-import { generateToken } from '../Utils/Auth.js'
+import { generateToken, SendOtp } from '../Utils/Auth.js'
 import { catchAsyncErrors } from '../Middleware/CatchAsyncError.js'
 import ErrorHandler from '../Middleware/ErrorHandler.js'
 
@@ -25,12 +25,22 @@ export const handleRegister = catchAsyncErrors(async(req,res, next)=>{
     
     const isRegistered = await User.findOne({email})
     if(isRegistered) return next(new ErrorHandler("User Already Exists With This Email", 400))
+
+    SendOtp(username, email, password, "Otp Sent Successfully On Your Email!", 200, res)
+})
+
+export const verifyOtp = catchAsyncErrors(async(req, res, next)=>{
+    const { username, email, password, otp, enteredOtp } = req.body;
+    if(!enteredOtp) return next(new ErrorHandler("Please Fill Otp", 400))
+
+    if( otp !== enteredOtp ) return next(new ErrorHandler("Otp is Incorrect", 400))
     
     const user = await User.create({
         username,
         email,
-        password,
+        password, 
         role: "Customer"
     })
-    generateToken(user, "User Registered", 200, res);
+
+    generateToken(user, "User Registered", 200, res)
 })
