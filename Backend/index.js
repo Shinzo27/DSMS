@@ -5,6 +5,7 @@ import { config } from 'dotenv'
 import cors from 'cors'
 import { errorMiddleware } from './Middleware/ErrorHandler.js'
 import mongoose from 'mongoose'
+import { checkForAuthentication } from './Utils/Auth.js'
 
 const PORT = 8000 || process.env.PORT
 
@@ -22,6 +23,7 @@ app.use(cors({
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(checkForAuthentication("CustomerToken"))
 
 app.get('/', (req,res)=>{
     console.log("Hello")

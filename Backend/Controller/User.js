@@ -44,3 +44,31 @@ export const verifyOtp = catchAsyncErrors(async(req, res, next)=>{
 
     generateToken(user, "User Registered", 200, res)
 })
+
+export const logoutUser = async(req,res,next)=>{
+    const tokenCookie = req.cookies?.CustomerToken
+    if(!tokenCookie) return next(new ErrorHandler("User is not Loggedin", 400))
+    
+    res.status(201).cookie("CustomerToken", "", {
+        httpOnly: true,
+        expires: new Date(Date.now()),
+    })
+    .json({
+        success: true,
+        message: "Customer Logged Out Successfully!"
+    })
+}
+
+export const logoutAdmin = async(req,res,next)=>{
+    const tokenCookie = req.cookies?.AdminToken
+    if(!tokenCookie) return next(new ErrorHandler("Admin is not Loggedin", 400))
+    
+    res.status(201).cookie("AdminToken", "", {
+        httpOnly: true,
+        expires: new Date(Date.now()),
+    })
+    .json({
+        success: true,
+        message: "Admin Logged Out Successfully!"
+    })
+}

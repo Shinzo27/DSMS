@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import otpGenerator from 'otp-generator'
 import nodemailer from 'nodemailer'
+import ErrorHandler from "../Middleware/ErrorHandler.js";
 
 export const generateToken = (user, message, stautsCode, res) => {
   const token = user.generateWebToken();
@@ -49,4 +50,19 @@ export const SendOtp = async(username, email, password, message, statusCode, res
     password,
     otp
   })
+}
+
+export function checkForAuthentication(cookieName) {
+  return(req,res,next)=>{
+    const token = req.cookies[cookieName]
+    if(!token) return next()
+    
+    try {
+      const userPayload = jwt.verify(token, process.env.JWT_SECRET_KEY)
+      req.user = userPayload
+    } catch (error) {
+      console.log(error)
+    }
+    return next()
+  }
 }
