@@ -45,6 +45,10 @@ export const verifyOtp = catchAsyncErrors(async(req, res, next)=>{
     generateToken(user, "User Registered", 200, res)
 })
 
+export const resetPassword = catchAsyncErrors(async(req,res,next)=>{
+    console.log("Updating Password");
+})
+
 export const logoutUser = async(req,res,next)=>{
     const tokenCookie = req.cookies?.CustomerToken
     if(!tokenCookie) return next(new ErrorHandler("User is not Loggedin", 400))
