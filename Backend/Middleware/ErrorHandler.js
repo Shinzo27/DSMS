@@ -20,10 +20,7 @@ export const errorMiddleware = (err, req, res, next) => {
     const message = `Json Web Token is expired, Try again!`;
     err = new ErrorHandler(message, 400);
   }
-  if (err.name === "CastError") {
-    const message = `Invalid ${err.path}`,
-      err = new ErrorHandler(message, 400);
-  }
+  
 
   const errorMessage = err.erros ? Object.values(err.erros).map((error)=> error.message) : err.message
 

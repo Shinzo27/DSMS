@@ -45,8 +45,22 @@ export const verifyOtp = catchAsyncErrors(async(req, res, next)=>{
     generateToken(user, "User Registered", 200, res)
 })
 
-export const resetPassword = catchAsyncErrors(async(req,res,next)=>{
-    console.log("Updating Password");
+export const updatePassword = catchAsyncErrors(async(req,res,next)=>{
+    const { oldPassword ,newPassword } = req.body;
+    const { email } = req.params;
+
+    const existinguser = await User.findOne({ email })
+    if(!existinguser) return next(new ErrorHandler("User not found", 400))
+    
+    const comparePassword = existinguser.comparePassword(oldPassword)
+
+    if(!comparePassword) return next(new ErrorHandler("Password Doesn't Matched!", 400));
+    
+    await existinguser.updatePassword(newPassword);
+    res.status(201).json({
+        success:true,
+        message: "Password Updated Successfully"
+    })
 })
 
 export const logoutUser = async(req,res,next)=>{

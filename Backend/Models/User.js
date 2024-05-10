@@ -43,6 +43,11 @@ userSchema.methods.comparePassword = async function(enteredPassword){
     return await bcrypt.compare(enteredPassword, this.password)
 }
 
+userSchema.methods.updatePassword = async function(newPassword) {
+   this.password = newPassword
+   await this.save();
+}
+
 const User = model('User', userSchema);
 
 export default User
