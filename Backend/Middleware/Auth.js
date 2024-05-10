@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import ErrorHandler from './ErrorHandler.js';
 
 export const isCustomerAuthenticated = async(req,res,next) => {
-    const token = req.cookies.customerToken;
+    const token = req.cookies.CustomerToken;
     if(!token) return next(new ErrorHandler("User Not Authenticated!", 400))
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
@@ -15,7 +15,7 @@ export const isCustomerAuthenticated = async(req,res,next) => {
 }
 
 export const isAdminAuthenticated = async(req,res,next) => {
-    const token = req.cookies.adminToken;
+    const token = req.cookies.AdminToken;
     if(!token) return next(new ErrorHandler("User Not Authenticated!", 400))
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)

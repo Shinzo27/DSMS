@@ -1,5 +1,6 @@
 import express from 'express'
 import userRouter from './Routes/User.js'
+import messageRouter from './Routes/Message.js'
 import cookieParser from 'cookie-parser'
 import { config } from 'dotenv'
 import cors from 'cors'
@@ -31,6 +32,7 @@ app.get('/', (req,res)=>{
 })
 
 app.use('/api/v1/user', userRouter)
+app.use('/api/v1/message', messageRouter)
 
 app.use(errorMiddleware)
 

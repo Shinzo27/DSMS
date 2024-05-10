@@ -5,7 +5,7 @@ import ErrorHandler from '../Middleware/ErrorHandler.js'
 
 export const handleLogin = catchAsyncErrors(async(req,res,next)=>{
     const { email, password } = req.body
-    if( !email || !password ) return next(new ErrorHandler("Please Enter All Details", 404))
+    if( !email || !password ) return next(new ErrorHandler("Please Enter All Details", 400))
 
     const user = await User.findOne({
         email,
@@ -49,6 +49,8 @@ export const updatePassword = catchAsyncErrors(async(req,res,next)=>{
     const { oldPassword ,newPassword } = req.body;
     const { email } = req.params;
 
+    if( !oldPassword || !newPassword ) return next(new ErrorHandler("Please Enter All Details", 400))
+
     const existinguser = await User.findOne({ email })
     if(!existinguser) return next(new ErrorHandler("User not found", 400))
     
@@ -61,6 +63,10 @@ export const updatePassword = catchAsyncErrors(async(req,res,next)=>{
         success:true,
         message: "Password Updated Successfully"
     })
+})
+
+export const resetPassword = catchAsyncErrors(async(req,res,next)=>{
+    console.log("resetPassword")
 })
 
 export const logoutUser = async(req,res,next)=>{
