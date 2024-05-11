@@ -3,6 +3,8 @@ import ErrorHandler from "../Middleware/ErrorHandler.js";
 import Product from "../Models/Product.js";
 import cloudinary from 'cloudinary'
 
+
+//add product
 export const addProduct = catchAsyncErrors(async(req,res,next)=>{
     if(!req.files) return next(new ErrorHandler("Please Select Product Image", 400))
 
@@ -35,6 +37,7 @@ export const addProduct = catchAsyncErrors(async(req,res,next)=>{
     })
 })
 
+//update product
 export const updateProduct = catchAsyncErrors(async(req,res,next)=>{
     if(!req.files) return next(new ErrorHandler("Please Select Product Image", 400))
 
@@ -57,14 +60,7 @@ export const updateProduct = catchAsyncErrors(async(req,res,next)=>{
     })
 })
 
-export const displayProduct = catchAsyncErrors(async(req,res,next)=>{
-    const products = await Product.find({isActive: true})
-
-    return res.status(200).json({
-        products
-    })
-})
-
+//list product for admin
 export const listProducts = catchAsyncErrors(async(req,res,next)=>{
     const allProducts = await Product.find({});
 
@@ -73,6 +69,7 @@ export const listProducts = catchAsyncErrors(async(req,res,next)=>{
     })
 })
 
+//list product for client
 export const getCategoryProduct = catchAsyncErrors(async(req,res,next)=>{
     const category = req.params.category;
 
@@ -83,6 +80,7 @@ export const getCategoryProduct = catchAsyncErrors(async(req,res,next)=>{
     })
 })
 
+//delete product
 export const deleteProduct = catchAsyncErrors(async(req,res,next)=>{
     const _id = req.params.id;
 
@@ -90,5 +88,16 @@ export const deleteProduct = catchAsyncErrors(async(req,res,next)=>{
 
     res.status(200).json({
         message: "Product Deleted Successfully!"
+    })
+})
+
+//get single product
+export const getSingleProduct = catchAsyncErrors(async(req,res,next)=>{
+    const _id = req.params.id;
+
+    const product = await Product.findOne({ _id });
+
+    return res.status(200).json({
+        product
     })
 })
