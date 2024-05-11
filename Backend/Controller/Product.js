@@ -35,6 +35,28 @@ export const addProduct = catchAsyncErrors(async(req,res,next)=>{
     })
 })
 
+export const updateProduct = catchAsyncErrors(async(req,res,next)=>{
+    if(!req.files) return next(new ErrorHandler("Please Select Product Image", 400))
+
+    const id = req.params.id;
+    const { name, description, quantity, price, isActive, category } = req.body;
+    const { prodImage } = req.files;
+    const allowedFormats = ["image/png", "image/jpeg", "image/webp", "image/jpg"]
+
+    if(!name || !description || !quantity || !price || !isActive || !category) return next(new ErrorHandler("Please Fill All Details Properly", 400))
+
+    const cloudinaryResponse = await cloudinary.uploader.upload(prodImage.tempFilePath);
+
+    if(!cloudinaryResponse || cloudinaryResponse.error) return next(new ErrorHandler("cloudinary Error", cloudinaryResponse.error))
+    
+    const update = await Product.findOneAndUpdate({_id: id}, { name,imageUrl: cloudinaryResponse.secure_url, description, quantity, price, isActive, category }, {new: true})
+
+    return res.status(200).json({
+        success: true,
+        message: "Product Updated Successfully!"
+    })
+})
+
 export const displayProduct = catchAsyncErrors(async(req,res,next)=>{
     const products = await Product.find({isActive: true})
 
