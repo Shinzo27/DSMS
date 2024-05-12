@@ -101,3 +101,62 @@ export const getSingleProduct = catchAsyncErrors(async(req,res,next)=>{
         product
     })
 })
+
+//update stock
+export const updateStock = catchAsyncErrors(async(req,res,next)=>{
+    const _id = req.params.id
+    const { action, value } = req.body;
+
+    if(!value) return next(new ErrorHandler("Enter The Value", 400));
+
+    const prodDetails = await Product.findOne({_id})
+
+    const quantity = prodDetails.quantity;
+    var updateValue;
+
+    if(action === 'reduce'){
+        if(value < quantity) {
+            updateValue = quantity - value;
+        }
+        else {
+            return next(new ErrorHandler("Value is greater than actual quantity!", 400))
+        }
+    }
+    else if(action === 'increase'){
+        updateValue = parseInt(quantity) + parseInt(value)
+    }
+
+    const update = await Product.findOneAndUpdate( { _id }, { quantity: updateValue} , {new: true} )
+
+    if(update) {
+        return res.status(200).json({
+            success: true,
+            message: "Product Updated Successfully!"
+        })
+    }
+    else {
+        return res.status(400).json({
+            message: "Error Occured!"
+        })
+    }
+})
+
+//update status
+export const updateStatus = catchAsyncErrors(async(req,res,next)=>{
+    const _id = req.params.id;
+    const { status } = req.body;
+
+    const update = await Product.findOneAndUpdate({ _id }, { isActive: status }, { new: true });
+
+    if(update) {
+        return res.status(200).json({
+            success: true,
+            message: "Product Status Is Updated!"
+        })
+    }
+    else {
+        return res.status(400).json({
+            message: "Error Occured!"
+        })
+    }
+})
