@@ -81,3 +81,76 @@ export const removeCartItem = catchAsyncErrors(async(req,res,next)=>{
         })
     }
 })
+
+export const increaseQuantity = catchAsyncErrors(async(req,res,next)=>{
+    const _id = req.params.id;
+
+    const cartProduct = await Cart.findOne({_id})
+    var prodPrice;
+    const productId = cartProduct.productId
+    const prod = await Product.findOne({_id: productId})
+    
+    console.log(cartProduct.totalPrice)
+    if(cartProduct.packType === "250gm"){
+        prodPrice = prod.price / 4;
+    } else if ( cartProduct.packType === "500gm") {
+        prodPrice = prod.price / 2;
+    } else if ( cartProduct.packType === "1kg") {
+        prodPrice = prod.price / 1;
+    }
+    
+    const newPrice = cartProduct.totalPrice + prodPrice;
+    const newQuantity = parseInt(cartProduct.quantity) + 1;
+
+    const update = await Cart.findOneAndUpdate({_id}, {totalPrice: newPrice, quantity: newQuantity}, {new: true})
+
+    if(update) {
+        return res.status(200).json({
+            success: true,
+            message: "Product Quantity Increased!"
+        })
+    } else {
+        return res.status(400).json({
+            success: false,
+            message: "Not Updated!"
+        })
+    }
+})
+
+export const reduceQuantity = catchAsyncErrors(async(req,res,next)=>{
+    const _id = req.params.id;
+
+    const cartProduct = await Cart.findOne({_id})
+
+    if(cartProduct.quantity <= 1) return next(new ErrorHandler("Quantity cannot be reduced more than 1!", 400))
+    
+    var prodPrice;
+    const productId = cartProduct.productId
+    const prod = await Product.findOne({_id: productId})
+    
+    console.log(cartProduct.totalPrice)
+    if(cartProduct.packType === "250gm"){
+        prodPrice = prod.price / 4;
+    } else if ( cartProduct.packType === "500gm") {
+        prodPrice = prod.price / 2;
+    } else if ( cartProduct.packType === "1kg") {
+        prodPrice = prod.price / 1;
+    }
+    
+    const newPrice = cartProduct.totalPrice - prodPrice;
+    const newQuantity = parseInt(cartProduct.quantity) - 1;
+
+    const update = await Cart.findOneAndUpdate({_id}, {totalPrice: newPrice, quantity: newQuantity}, {new: true})
+
+    if(update) {
+        return res.status(200).json({
+            success: true,
+            message: "Product Quantity Reduced!"
+        })
+    } else {
+        return res.status(400).json({
+            success: false,
+            message: "Not Updated!"
+        })
+    }
+})
