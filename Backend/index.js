@@ -6,6 +6,7 @@ import userDetailsRouter from './Routes/UserDetails.js'
 import categoryRouter from './Routes/Category.js'
 import productRouter from './Routes/Product.js'
 import cartRouter from './Routes/Cart.js'
+import wishlistRouter from './Routes/Wishlist.js'
 
 import cookieParser from 'cookie-parser'
 import { config } from 'dotenv'
@@ -58,6 +59,7 @@ app.use('/api/v1/userDetails', userDetailsRouter)
 app.use('/api/v1/category', categoryRouter)
 app.use('/api/v1/product', productRouter)
 app.use('/api/v1/cart', cartRouter)
+app.use('/api/v1/wishlist', wishlistRouter)
 
 app.use(errorMiddleware)
 
