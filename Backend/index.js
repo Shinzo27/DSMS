@@ -10,6 +10,7 @@ import wishlistRouter from './Routes/Wishlist.js'
 import reviewRouter from './Routes/Review.js'
 import feedbackRouter from './Routes/Feedback.js'
 import imageRouter from './Routes/Image.js'
+import paymentRouter from './Routes/Payment.js'
 
 import cookieParser from 'cookie-parser'
 import { config } from 'dotenv'
@@ -19,6 +20,7 @@ import mongoose from 'mongoose'
 import { checkForAuthentication } from './Utils/Auth.js'
 import fileUpload from 'express-fileupload'
 import cloudinary from 'cloudinary'
+import Razorpay from 'razorpay'
 
 const PORT = 8000 || process.env.PORT
 
@@ -56,6 +58,11 @@ app.use(
     })
 )
 
+export const instance = new Razorpay({
+    key_id: process.env.RAZORPAY_SECRET_ID,
+    key_secret: process.env.RAZORPAY_SECRET_KEY,
+});
+
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/message', messageRouter)
 app.use('/api/v1/userDetails', userDetailsRouter)
@@ -66,6 +73,7 @@ app.use('/api/v1/wishlist', wishlistRouter)
 app.use('/api/v1/reviews', reviewRouter)
 app.use('/api/v1/feedback', feedbackRouter)
 app.use('/api/v1/images', imageRouter)
+app.use('/api/v1/payment', paymentRouter)
 
 app.use(errorMiddleware)
 

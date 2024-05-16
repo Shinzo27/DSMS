@@ -23,6 +23,7 @@
     "mongoose": "^8.3.3",
     "nodemailer": "^6.9.13",
     "otp-generator": "^4.0.1",
+    "razorpay": "^2.9.3",
     "validator": "^13.11.0"
   },
   "devDependencies": {
