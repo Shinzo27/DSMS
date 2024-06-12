@@ -59,7 +59,7 @@ export const addToCart = catchAsyncErrors(async(req,res,next)=>{
 export const displayCartItems = catchAsyncErrors(async(req,res,next)=>{
     const userId = req.user._id;
 
-    const cartItems = await Cart.find({userId})
+    const cartItems = await Cart.find({userId}).populate('productId')
 
     return res.status(200).json({
         cartItems

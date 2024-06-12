@@ -7,8 +7,10 @@ var cartSchema = new Schema({
         index:true,
     },
     productId:{
-        type:String,
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
         required:true,
+
     },
     quantity:{
         type:String,
