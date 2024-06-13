@@ -80,6 +80,27 @@ export const getCategoryProduct = catchAsyncErrors(async(req,res,next)=>{
     })
 })
 
+// const productsByCategory = await Product.aggregate([
+//     {
+//       $lookup: {
+//         from: 'categories',
+//         localField: 'category',
+//         foreignField: '_id',
+//         as: 'categoryDetails'
+//       }
+//     },
+//     {
+//       $unwind: '$categoryDetails'
+//     },
+//     {
+//       $group: {
+//         _id: '$category',
+//         categoryName: { $first: '$categoryDetails.name' },
+//         products: { $push: '$$ROOT' }
+//       }
+//     }
+//   ]);
+
 //delete product
 export const deleteProduct = catchAsyncErrors(async(req,res,next)=>{
     const _id = req.params.id;
@@ -160,3 +181,7 @@ export const updateStatus = catchAsyncErrors(async(req,res,next)=>{
         })
     }
 })
+
+
+
+  
