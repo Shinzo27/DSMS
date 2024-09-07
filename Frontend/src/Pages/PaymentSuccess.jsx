@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import PaymentSuccessImage from '../assets/PaymentSuccessful.jpg'
 import confetti from "canvas-confetti";
+import BoxReveal from "@/components/magicui/box-reveal";
+import Particles from "@/components/magicui/particles";
 
 const PaymentSuccess = () => {
   const date = new Date()
@@ -47,11 +49,21 @@ const PaymentSuccess = () => {
     <>
       <div className='flex flex-col justify-center items-center pt-16'>
         <div className='w-1/3 '>
-          <img src={PaymentSuccessImage} alt=""/>
+          <Particles className="absolute inset-0" quantity={400} ease={100} color={'000000'} refresh/> 
+          <BoxReveal boxColor={"#5046e6"} duration={0.5}>
+            <img src={PaymentSuccessImage} alt=""/>
+          </BoxReveal>
         </div>
         <div className='flex flex-col justify-center items-center font-Dosis font-semibold pt-5 text-3xl'>
-          <h1>Payment Successful</h1>
+        <BoxReveal boxColor={"#5046e6"} duration={0.6}>
+          <h1 className='text-4xl'>Your order is placed!</h1>
+        </BoxReveal>
+        <BoxReveal boxColor={"#5046e6"} duration={0.6}>
+          <h1 className='text-xl'>Happy to serve you! See you soon!</h1>
+        </BoxReveal>
+        <BoxReveal boxColor={"#5046e6"} duration={0.6}>
           <h2 className='pt-5'>Your order will be recieved on { fulldate }</h2>
+        </BoxReveal>
         </div>
       </div>
     </>
